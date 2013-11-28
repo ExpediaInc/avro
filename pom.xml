@@ -67,6 +67,19 @@
 
   <inceptionYear>2009</inceptionYear>
 
+    <distributionManagement>
+      <repository>
+        <id>ext-releases-local</id>
+        <name>EAN External Release Repo</name>
+        <url>http://maven.ean/content/repositories/ext-releases-local/</url>
+    </repository>
+    <snapshotRepository>
+        <id>ext-snapshots-local</id>
+        <name>EAN Ext Snapshot Repo</name>
+        <url>http://maven.ean/content/repositories/ext-snapshots-local/</url>
+    </snapshotRepository>
+    </distributionManagement>
+
   <mailingLists>
     <mailingList>
       <name>Avro Developer List</name>
