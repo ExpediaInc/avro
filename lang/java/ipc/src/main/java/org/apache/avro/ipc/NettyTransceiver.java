@@ -277,6 +277,7 @@ public class NettyTransceiver extends Transceiver {
 
             synchronized(channelFutureLock) {
           if (!channelFuture.isSuccess()) {
+            channelFuture.getChannel().close();
             throw new IOException("Error connecting to " + remoteAddr, 
                 channelFuture.getCause());
           }
