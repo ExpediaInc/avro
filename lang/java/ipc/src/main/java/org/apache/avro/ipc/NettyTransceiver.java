@@ -204,6 +204,18 @@ public class NettyTransceiver extends Transceiver {
     stateLock.readLock().lock();
     try {
       getChannel();
+    } catch (Throwable e) {
+      // must attempt to clean up any allocated channel future
+      if (channelFuture != null) {
+        channelFuture.getChannel().close();
+      }
+
+      if (e instanceof IOException)
+        throw (IOException)e;
+      if (e instanceof RuntimeException)
+        throw (RuntimeException)e;
+      // all that's left is Error
+      throw (Error)e;
     } finally {
       stateLock.readLock().unlock();
     }
@@ -277,8 +289,7 @@ public class NettyTransceiver extends Transceiver {
 
             synchronized(channelFutureLock) {
           if (!channelFuture.isSuccess()) {
-            channelFuture.getChannel().close();
-            throw new IOException("Error connecting to " + remoteAddr, 
+            throw new IOException("Error connecting to " + remoteAddr,
                 channelFuture.getCause());
           }
           channel = channelFuture.getChannel();
